@@ -12,7 +12,7 @@ GitHub Copilot agent mode workshop: Build an OctoFit Tracker fitness app with Re
 
 🚫 **Never:**
 
-- Changing directories with `cd` during command execution
+
 - Using ports other than 8000 (Django), 3000 (React), 27017 (MongoDB)
 - Creating virtual environments outside `octofit-tracker/backend/venv/`
 - Modifying `.devcontainer/` configuration
