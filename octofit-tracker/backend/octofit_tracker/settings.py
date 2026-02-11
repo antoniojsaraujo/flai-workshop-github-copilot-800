@@ -16,6 +16,9 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Codespace configuration
+CODESPACE_NAME = os.environ.get('CODESPACE_NAME')
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -27,11 +30,10 @@ SECRET_KEY = 'django-insecure-@x8(v-)%4e=)8q+#o-e2$8gga_gbm1(gy02(4q7@do^k@ch*pe
 DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
-if os.environ.get('CODESPACE_NAME'):
-    codespace_name = os.environ.get('CODESPACE_NAME')
+if CODESPACE_NAME:
     ALLOWED_HOSTS.extend([
-        f"{codespace_name}-8000.app.github.dev",
-        f"{codespace_name}-3000.app.github.dev",
+        f"{CODESPACE_NAME}-8000.app.github.dev",
+        f"{CODESPACE_NAME}-3000.app.github.dev",
     ])
 
 
@@ -145,11 +147,10 @@ CORS_ALLOWED_ORIGINS = [
     'http://127.0.0.1:3000',
 ]
 
-if os.environ.get('CODESPACE_NAME'):
-    codespace_name = os.environ.get('CODESPACE_NAME')
+if CODESPACE_NAME:
     CORS_ALLOWED_ORIGINS.extend([
-        f"https://{codespace_name}-3000.app.github.dev",
-        f"https://{codespace_name}-8000.app.github.dev",
+        f"https://{CODESPACE_NAME}-3000.app.github.dev",
+        f"https://{CODESPACE_NAME}-8000.app.github.dev",
     ])
 
 CORS_ALLOW_METHODS = [
@@ -181,9 +182,8 @@ CSRF_TRUSTED_ORIGINS = [
     'http://127.0.0.1:8000',
 ]
 
-if os.environ.get('CODESPACE_NAME'):
-    codespace_name = os.environ.get('CODESPACE_NAME')
+if CODESPACE_NAME:
     CSRF_TRUSTED_ORIGINS.extend([
-        f"https://{codespace_name}-3000.app.github.dev",
-        f"https://{codespace_name}-8000.app.github.dev",
+        f"https://{CODESPACE_NAME}-3000.app.github.dev",
+        f"https://{CODESPACE_NAME}-8000.app.github.dev",
     ])
