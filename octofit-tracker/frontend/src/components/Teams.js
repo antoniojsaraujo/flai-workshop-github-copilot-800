@@ -50,13 +50,13 @@ function Teams() {
             </tr>
           </thead>
           <tbody>
-            {teams.map(team => (
-              <tr key={team.id}>
-                <td>{team.id}</td>
-                <td>{team.name}</td>
-                <td>{team.description}</td>
-                <td>{team.members?.length || 0}</td>
-                <td>{new Date(team.created_at).toLocaleDateString()}</td>
+            {teams.map((team, index) => (
+              <tr key={team._id || team.id || index}>
+                <td>{team._id || team.id || index + 1}</td>
+                <td>{team.name || 'N/A'}</td>
+                <td>{team.description || 'N/A'}</td>
+                <td>{team.member_count || team.members?.length || 0}</td>
+                <td>{team.created_at ? new Date(team.created_at).toLocaleDateString() : 'N/A'}</td>
               </tr>
             ))}
           </tbody>

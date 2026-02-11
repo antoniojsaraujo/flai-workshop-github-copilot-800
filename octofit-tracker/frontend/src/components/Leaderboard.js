@@ -5,7 +5,7 @@ function Leaderboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const API_URL = `https://${process.env.REACT_APP_CODESPACE_NAME}-8000.app.github.dev/api/leaderboard/`;
+  const API_URL = `https://${process.env.REACT_APP_CODESPACE_NAME}-8000.app.github.dev/api/leaderboard/current/`;
 
   useEffect(() => {
     console.log('Leaderboard component - Fetching from API endpoint:', API_URL);
@@ -19,10 +19,10 @@ function Leaderboard() {
       })
       .then(data => {
         console.log('Leaderboard component - Raw API response:', data);
-        // Handle both paginated (.results) and plain array responses
-        const leaderboardData = data.results || data;
-        console.log('Leaderboard component - Processed data:', leaderboardData);
-        setLeaderboard(Array.isArray(leaderboardData) ? leaderboardData : []);
+        // The /current/ endpoint returns {period, type, rankings, updated_at}
+        const rankingsData = data.rankings || [];
+        console.log('Leaderboard component - Processed rankings:', rankingsData);
+        setLeaderboard(Array.isArray(rankingsData) ? rankingsData : []);
         setLoading(false);
       })
       .catch(error => {
@@ -43,22 +43,16 @@ function Leaderboard() {
           <thead>
             <tr>
               <th>Rank</th>
-              <th>User</th>
-              <th>Total Activities</th>
-              <th>Total Calories</th>
-              <th>Total Distance (km)</th>
-              <th>Total Duration (min)</th>
+              <th>Name</th>
+              <th>Points</th>
             </tr>
           </thead>
           <tbody>
             {leaderboard.map((entry, index) => (
-              <tr key={entry.user_id || index}>
-                <td>{index + 1}</td>
-                <td>{entry.user_name || entry.username}</td>
-                <td>{entry.total_activities || 0}</td>
-                <td>{entry.total_calories || 0}</td>
-                <td>{entry.total_distance || 0}</td>
-                <td>{entry.total_duration || 0}</td>
+              <tr key={entry.id || index}>
+                <td>{entry.rank || index + 1}</td>
+                <td>{entry.name || entry.user_name || entry.username || 'N/A'}</td>
+                <td>{entry.points || 0}</td>
               </tr>
             ))}
           </tbody>

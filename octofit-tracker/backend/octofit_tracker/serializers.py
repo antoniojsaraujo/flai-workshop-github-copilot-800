@@ -157,6 +157,7 @@ class WorkoutSerializer(serializers.ModelSerializer):
     """Serializer for Workout model"""
     _id = serializers.CharField(read_only=True)
     exercise_count = serializers.SerializerMethodField()
+    exercises = serializers.SerializerMethodField()
 
     class Meta:
         model = Workout
@@ -167,9 +168,25 @@ class WorkoutSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ['_id', 'created_at', 'updated_at']
 
+    def get_exercises(self, obj):
+        """Get exercises, handling both JSON strings and native lists"""
+        try:
+            if isinstance(obj.exercises, list):
+                return obj.exercises
+            elif isinstance(obj.exercises, str):
+                import json
+                return json.loads(obj.exercises)
+            return []
+        except Exception:
+            return []
+
     def get_exercise_count(self, obj):
         """Get the number of exercises in the workout"""
-        return len(obj.exercises) if isinstance(obj.exercises, list) else 0
+        try:
+            exercises = self.get_exercises(obj)
+            return len(exercises) if isinstance(exercises, list) else 0
+        except Exception:
+            return 0
 
     def to_representation(self, instance):
         """Convert ObjectId to string in response"""

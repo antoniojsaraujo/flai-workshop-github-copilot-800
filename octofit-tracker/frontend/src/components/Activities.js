@@ -52,15 +52,15 @@ function Activities() {
             </tr>
           </thead>
           <tbody>
-            {activities.map(activity => (
-              <tr key={activity.id}>
-                <td>{activity.id}</td>
-                <td>{activity.user_name || activity.user}</td>
-                <td>{activity.activity_type}</td>
-                <td>{activity.duration}</td>
-                <td>{activity.distance}</td>
-                <td>{activity.calories_burned}</td>
-                <td>{new Date(activity.date).toLocaleDateString()}</td>
+            {activities.map((activity, index) => (
+              <tr key={activity._id || activity.id || index}>
+                <td>{activity._id || activity.id || index + 1}</td>
+                <td>{activity.user_name || activity.user || 'N/A'}</td>
+                <td>{activity.activity_type || 'N/A'}</td>
+                <td>{activity.duration || 0}</td>
+                <td>{activity.distance || 0}</td>
+                <td>{activity.calories || activity.calories_burned || 0}</td>
+                <td>{activity.activity_date ? new Date(activity.activity_date).toLocaleDateString() : (activity.date ? new Date(activity.date).toLocaleDateString() : 'N/A')}</td>
               </tr>
             ))}
           </tbody>

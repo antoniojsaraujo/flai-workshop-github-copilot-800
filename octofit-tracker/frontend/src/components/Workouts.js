@@ -43,24 +43,24 @@ function Workouts() {
           <thead>
             <tr>
               <th>ID</th>
-              <th>User</th>
               <th>Title</th>
               <th>Description</th>
               <th>Duration (min)</th>
               <th>Difficulty</th>
-              <th>Created</th>
+              <th>Activity Type</th>
+              <th>Exercises</th>
             </tr>
           </thead>
           <tbody>
-            {workouts.map(workout => (
-              <tr key={workout.id}>
-                <td>{workout.id}</td>
-                <td>{workout.user_name || workout.user}</td>
-                <td>{workout.title}</td>
-                <td>{workout.description}</td>
-                <td>{workout.duration}</td>
-                <td>{workout.difficulty_level}</td>
-                <td>{new Date(workout.created_at).toLocaleDateString()}</td>
+            {workouts.map((workout, index) => (
+              <tr key={workout._id || workout.id || index}>
+                <td>{workout._id || workout.id || index + 1}</td>
+                <td>{workout.title || 'N/A'}</td>
+                <td>{workout.description || 'N/A'}</td>
+                <td>{workout.duration || 0}</td>
+                <td>{workout.difficulty_level || 'N/A'}</td>
+                <td>{workout.activity_type || 'N/A'}</td>
+                <td>{workout.exercise_count || (workout.exercises ? workout.exercises.length : 0)}</td>
               </tr>
             ))}
           </tbody>

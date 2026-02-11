@@ -1,6 +1,44 @@
 from django.db import models
 from django.contrib.auth.models import User
 from bson import ObjectId
+import json
+
+
+class FlexibleJSONField(models.TextField):
+    """Custom field that handles both native Python objects and JSON strings"""
+    
+    def from_db_value(self, value, expression, connection):
+        if value is None:
+            return value
+        # If it's already a Python object (list/dict), return it
+        if isinstance(value, (list, dict)):
+            return value
+        # If it's a string, try to parse it as JSON
+        if isinstance(value, str):
+            try:
+                return json.loads(value)
+            except json.JSONDecodeError:
+                return []
+        return []
+    
+    def to_python(self, value):
+        if isinstance(value, (list, dict)):
+            return value
+        if value is None:
+            return []
+        if isinstance(value, str):
+            try:
+                return json.loads(value)
+            except json.JSONDecodeError:
+                return []
+        return []
+    
+    def get_prep_value(self, value):
+        if value is None:
+            return json.dumps([])
+        if isinstance(value, str):
+            return value
+        return json.dumps(value)
 
 
 class UserProfile(models.Model):
@@ -131,7 +169,7 @@ class Leaderboard(models.Model):
     )
     start_date = models.DateField()
     end_date = models.DateField(null=True, blank=True)
-    rankings = models.JSONField(default=list)
+    rankings = FlexibleJSONField(default='[]')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -170,7 +208,7 @@ class Workout(models.Model):
         ]
     )
     duration = models.IntegerField(help_text='Estimated duration in minutes')
-    exercises = models.JSONField(default=list, help_text='List of exercises in the workout')
+    exercises = FlexibleJSONField(default='[]', help_text='List of exercises in the workout')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

@@ -6,6 +6,7 @@ import Activities from './components/Activities';
 import Teams from './components/Teams';
 import Leaderboard from './components/Leaderboard';
 import Workouts from './components/Workouts';
+import logo from './octofitapp-small.png';
 
 function App() {
   console.log('App component - REACT_APP_CODESPACE_NAME:', process.env.REACT_APP_CODESPACE_NAME);
@@ -15,7 +16,10 @@ function App() {
     <div className="App">
       <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
         <div className="container-fluid">
-          <Link className="navbar-brand" to="/">OctoFit Tracker</Link>
+          <Link className="navbar-brand" to="/">
+            <img src={logo} alt="OctoFit Logo" className="app-logo" />
+            OctoFit Tracker
+          </Link>
           <button 
             className="navbar-toggler" 
             type="button" 

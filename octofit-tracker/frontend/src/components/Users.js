@@ -47,18 +47,18 @@ function Users() {
               <th>Email</th>
               <th>First Name</th>
               <th>Last Name</th>
-              <th>Active</th>
+              <th>Fitness Level</th>
             </tr>
           </thead>
           <tbody>
-            {users.map(user => (
-              <tr key={user.id}>
-                <td>{user.id}</td>
-                <td>{user.username}</td>
-                <td>{user.email}</td>
-                <td>{user.first_name}</td>
-                <td>{user.last_name}</td>
-                <td>{user.is_active ? 'Yes' : 'No'}</td>
+            {users.map((user, index) => (
+              <tr key={user._id || user.id || index}>
+                <td>{user._id || user.id || index + 1}</td>
+                <td>{user.username || user.email?.split('@')[0] || 'N/A'}</td>
+                <td>{user.email || 'N/A'}</td>
+                <td>{user.first_name || 'N/A'}</td>
+                <td>{user.last_name || 'N/A'}</td>
+                <td>{user.fitness_level || 'N/A'}</td>
               </tr>
             ))}
           </tbody>
