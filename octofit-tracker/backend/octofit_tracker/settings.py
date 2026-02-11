@@ -28,7 +28,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 if os.environ.get('CODESPACE_NAME'):
-    ALLOWED_HOSTS.append(f"{os.environ.get('CODESPACE_NAME')}-8000.app.github.dev")
+    codespace_name = os.environ.get('CODESPACE_NAME')
+    ALLOWED_HOSTS.extend([
+        f"{codespace_name}-8000.app.github.dev",
+        f"{codespace_name}-3000.app.github.dev",
+    ])
 
 
 # Application definition
@@ -136,7 +140,18 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CORS settings
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+]
+
+if os.environ.get('CODESPACE_NAME'):
+    codespace_name = os.environ.get('CODESPACE_NAME')
+    CORS_ALLOWED_ORIGINS.extend([
+        f"https://{codespace_name}-3000.app.github.dev",
+        f"https://{codespace_name}-8000.app.github.dev",
+    ])
+
 CORS_ALLOW_METHODS = [
     'DELETE',
     'GET',
@@ -156,8 +171,19 @@ CORS_ALLOW_HEADERS = [
     'x-csrftoken',
     'x-requested-with',
 ]
+CORS_ALLOW_CREDENTIALS = True
 
 # CSRF settings for Codespaces
-CSRF_TRUSTED_ORIGINS = ['http://localhost:8000', 'http://127.0.0.1:8000']
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:3000',
+    'http://localhost:8000',
+    'http://127.0.0.1:3000',
+    'http://127.0.0.1:8000',
+]
+
 if os.environ.get('CODESPACE_NAME'):
-    CSRF_TRUSTED_ORIGINS.append(f"https://{os.environ.get('CODESPACE_NAME')}-8000.app.github.dev")
+    codespace_name = os.environ.get('CODESPACE_NAME')
+    CSRF_TRUSTED_ORIGINS.extend([
+        f"https://{codespace_name}-3000.app.github.dev",
+        f"https://{codespace_name}-8000.app.github.dev",
+    ])
